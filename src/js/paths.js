@@ -92,7 +92,6 @@ export function getDeprelPathArrow (deprelObj, pointsLeft, pointsUp) {
   }
 
   let path = 'M' + A.x + ',' + A.y + ' L' + B.x + ',' + B.y
-  console.log(C, D)
   path += ' L' + D.x + ',' + D.y + ' L' + C.x + ',' + C.y + ' Z'
   return path
 }

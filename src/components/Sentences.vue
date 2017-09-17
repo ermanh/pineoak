@@ -208,7 +208,7 @@ export default {
       .attr('class', 'sentenceBkg')
       .attr('id', function (d) { return d.baseSentence._key })
         .append('svg')
-        .attr('width', function (d) { return getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec).width })
+        .attr('width', function (d) { return getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec, tagFontSpec).width })
         .attr('height', function (d) { return getHeight(d.baseSentence.words, d.parallelSentence.words, mainSentenceHeight, alignmentsHeight, singleLineHeight, singleDeprelHeight, firstDeprelHeight, treetopSpace) })
 
     const base = svg.append('g')
@@ -224,7 +224,7 @@ export default {
 
     const baseWordGroups = base.selectAll('g.baseWordGroup')
       .data(function (d) {
-        const widthObj = getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec)
+        const widthObj = getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec, tagFontSpec)
         const baseOrParallelLonger = widthObj.baseOrParallelLonger
         const longerBy = widthObj.longerBy
         return getWordsWithDimensions(d.baseSentence.words, fontSpec, tagFontSpec, widthBetweenWords, getTextWidth, 'base', baseOrParallelLonger, longerBy)
@@ -282,7 +282,7 @@ export default {
         d.alignmentsStart = alignmentsStart
         return alignmentsStart
       })
-      .attr('width', function (d) { return getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec).width })
+      .attr('width', function (d) { return getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec, tagFontSpec).width })
       .attr('height', alignmentsHeight)
       .attr('fill', 'none') // 'var(--pine-green-L1)')
 
@@ -304,7 +304,7 @@ export default {
 
     const parallelWordGroups = parallel.selectAll('g.parallelWord')
       .data(function (d) {
-        const widthObj = getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec)
+        const widthObj = getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec, tagFontSpec)
         const baseOrParallelLonger = widthObj.baseOrParallelLonger
         const longerBy = widthObj.longerBy
         let words = getWordsWithDimensions(d.parallelSentence.words, fontSpec, tagFontSpec, widthBetweenWords, getTextWidth, 'parallel', baseOrParallelLonger, longerBy)
