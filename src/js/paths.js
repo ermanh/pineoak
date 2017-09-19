@@ -31,7 +31,6 @@ export function getPath (deprelObj, fromElem, toElem, upOrDown, singleDeprelHeig
   const deprelLayer = Math.abs(fromOrder - toOrder)
   const pathHeight = (deprelLayer === 1) ? firstDeprelHeight - (singleDeprelHeight / 2) : firstDeprelHeight + singleDeprelHeight * (deprelLayer - 1) - singleDeprelHeight / 2
   const pathTopY = pathStartEndY + yDirection * pathHeight
-  console.log(adjustPathTopLength(deprelLayer))
   const pathTopLength = Math.abs(toMidPoint - fromMidPoint) * adjustPathTopLength(deprelLayer)
   const diagonalXLength = (midPointsLength - pathTopLength) / 2
 
