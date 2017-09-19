@@ -60,6 +60,7 @@ export function conllToJson (raw) {
     const sentObj = { _key: sent._key, order: sent.order, sentence: sent.sentence, words: sent.words }
     if (!newSentsObj[sent.order]) {
       newSentsObj[sent.order] = {
+        isEmpty: false,
         textId: sent.textID,
         wordAlignments: sent.alignments,
         deprels: sent.deprels,
@@ -85,6 +86,7 @@ export function conllToJson (raw) {
   let newSents = keys.map(key => newSentsObj[key])
   newSents = newSents.map(sent => {
     const emptySentence = {
+      isEmpty: true,
       _key: '',
       order: '',
       sentence: '',

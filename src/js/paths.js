@@ -97,14 +97,14 @@ export function getDeprelPathArrow (deprelObj, pointsLeft, pointsUp) {
 
 export function getAlignmentPath (fromElem, toElem, upOrDown, alignmentsStartY, alignmentsHeight) {
   const adjustment = 4
-  const fromStartX = parseFloat(fromElem.select('text.word').attr('x'))
-  const fromWidth = parseFloat(fromElem.attr('wordGroupWidth'))
-  const toStartX = parseFloat(toElem.select('text.word').attr('x'))
-  const toWidth = parseFloat(toElem.attr('wordGroupWidth'))
+  const fromStartX = fromElem ? parseFloat(fromElem.select('text.word').attr('x')) : 0
+  const fromWidth = fromElem ? parseFloat(fromElem.attr('wordGroupWidth')) : 0
+  const toStartX = toElem ? parseFloat(toElem.select('text.word').attr('x')) : 0
+  const toWidth = toElem ? parseFloat(toElem.attr('wordGroupWidth')) : 0
   const isBase = (upOrDown === 'up') ? 0 : 1
   const isParallel = (upOrDown === 'up') ? 1 : 0
   const fromCoord = { x: fromStartX + fromWidth / 2, y: alignmentsStartY + alignmentsHeight * isBase }
   const toCoord = { x: toStartX + toWidth / 2, y: alignmentsStartY + alignmentsHeight * isParallel + adjustment }
   const path = 'M' + fromCoord.x + ',' + fromCoord.y + ' L' + toCoord.x + ',' + toCoord.y
-  return path
+  return toElem && fromElem ? path : ''
 }

@@ -18,20 +18,27 @@ export function getWidth (baseWords, parallelWords, widthBetweenWords, fontSpec,
   return { width: width, baseOrParallelLonger: baseOrParallelLonger, longerBy: longerBy }
 }
 
-export function getHeight (baseWords, parallelWords, mainSentenceHeight, alignmentsHeight, singleLineHeight, singleDeprelHeight, firstDeprelHeight, treetopSpace) {
+export function getHeight (baseWords, parallelWords, parallelIsEmpty, mainSentenceHeight, alignmentsHeight, singleLineHeight, singleDeprelHeight, firstDeprelHeight, treetopSpace) {
   const baseLayersArr = baseWords.map(obj => Object.keys(obj).length - 1)
   const parallelLayersArr = parallelWords.map(obj => Object.keys(obj).length - 1)
 
   const baseMaxLayers = d3.max(baseLayersArr)
   const parallelMaxLayers = d3.max(parallelLayersArr)
 
-  const lineLayers = d3.max([baseMaxLayers, parallelMaxLayers])
-  const deprelLayers = baseWords.length - 1 + parallelWords.length - 1
+  let lineLayers = d3.max([baseMaxLayers, parallelMaxLayers])
+  const deprelLayers = parallelIsEmpty ? baseWords.length - 2 : baseWords.length - 2 + parallelWords.length - 2
 
-  const lines = singleLineHeight * lineLayers * 2
-  const deprels = singleDeprelHeight * (deprelLayers - 2) + firstDeprelHeight * 2
+  // double the following if parallel sentence is NOT empty
+  lineLayers = parallelIsEmpty ? lineLayers : lineLayers * 2
+  firstDeprelHeight = parallelIsEmpty ? firstDeprelHeight : firstDeprelHeight * 2
+  treetopSpace = parallelIsEmpty ? treetopSpace : treetopSpace * 2
+  mainSentenceHeight = parallelIsEmpty ? mainSentenceHeight : mainSentenceHeight * 2
+  alignmentsHeight = parallelIsEmpty ? 0 : alignmentsHeight
 
-  const height = lines + deprels + alignmentsHeight + treetopSpace * 2 + mainSentenceHeight * 2
+  const lines = singleLineHeight * lineLayers
+  const deprels = singleDeprelHeight * deprelLayers + firstDeprelHeight
+
+  const height = lines + deprels + alignmentsHeight + treetopSpace + mainSentenceHeight
   return height
 }
 

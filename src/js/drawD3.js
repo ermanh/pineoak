@@ -24,7 +24,7 @@ export function drawD3 (sentences, drawConfig) {
     .attr('id', function (d) { return d.baseSentence._key })
     .append('svg')
     .attr('width', function (d) { return getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec, tagFontSpec).width })
-    .attr('height', function (d) { return getHeight(d.baseSentence.words, d.parallelSentence.words, mainSentenceHeight, alignmentsHeight, singleLineHeight, singleDeprelHeight, firstDeprelHeight, treetopSpace) })
+    .attr('height', function (d) { return getHeight(d.baseSentence.words, d.parallelSentence.words, d.parallelSentence.isEmpty, mainSentenceHeight, alignmentsHeight, singleLineHeight, singleDeprelHeight, firstDeprelHeight, treetopSpace) })
 
   const base = svg.append('g')
     .attr('id', function (d) { return 'baseSentence-' + d.baseSentence.order })
@@ -88,8 +88,12 @@ export function drawD3 (sentences, drawConfig) {
   const alignmentsBox = svg.append('rect')
     .attr('class', function (d) {
       let base = 'alignmentsBox '
-      base += ' alignmentsBox-' + d.baseSentence._key + '-' + d.baseLang + '--' + d.parallelSentence._key + '-' + d.parallelLang
-      base += ' alignmentsBox-' + d.parallelSentence._key + '-' + d.parallelLang + '--' + d.baseSentence._key + '-' + d.baseLang
+      if (d.parallelSentence.isEmpty) {
+        base += ' alignmentsBox-' + d.baseSentence._key + '-' + d.baseLang + '--noparallel'
+      } else {
+        base += ' alignmentsBox-' + d.baseSentence._key + '-' + d.baseLang + '--' + d.parallelSentence._key + '-' + d.parallelLang
+      }
+      // base += ' alignmentsBox-' + d.parallelSentence._key + '-' + d.parallelLang + '--' + d.baseSentence._key + '-' + d.baseLang
       return base
     })
     // .attr('id', function (d) { return 'alignmentsBox-' + d.baseSentence._key + '-' + d.parallelSentence._key })
@@ -100,7 +104,7 @@ export function drawD3 (sentences, drawConfig) {
       return alignmentsStart
     })
     .attr('width', function (d) { return getWidth(d.baseSentence.words, d.parallelSentence.words, widthBetweenWords, fontSpec, tagFontSpec).width })
-    .attr('height', alignmentsHeight)
+    .attr('height', function (d) { return d.parallelSentence.isEmpty ? '0' : alignmentsHeight })
     .attr('fill', 'none') // 'var(--pine-green-L1)')
 
   const parallel = svg.append('g')
@@ -164,7 +168,14 @@ export function drawD3 (sentences, drawConfig) {
     .attr('fill', textColor)
     .text(function (w) { return w.word })
 
-  const deprels = svg.selectAll('g.deprelGroup')
+  const deprels = svg.append('g')
+    .attr('class', 'deprels')
+    .attr('id', function (d) {
+      const id = 'deprels-' + d.baseSentence._key + '-' + d.baseLang
+      const parallel = d.parallelSentence.isEmpty ? 'noparallel' : d.parallelSentence._key + '-' + d.parallelLang
+      return id + '--' + parallel
+    })
+    .selectAll('g.deprelGroup')
     .data(function (sentences) { return sentences.deprels })
     .enter()
     .append('g')
@@ -213,7 +224,7 @@ export function drawD3 (sentences, drawConfig) {
 
   const alignments = svg.append('g')
     .attr('class', 'alignments')
-    .attr('id', function (d) { return 'alignments-' + d.baseSentence._key + '-' + d.parallelSentence._key })
+    .attr('id', function (d) { return 'alignments-' + d.baseSentence._key + '-' + d.baseLang + '--' + d.parallelSentence._key + '-' + d.parallelLang })
 
   const alignmentPaths = alignments.selectAll('path.alignmentPath')
     .data(function (d) {
@@ -222,12 +233,23 @@ export function drawD3 (sentences, drawConfig) {
     .enter()
     .append('path')
     .attr('class', 'alignmentPath')
-    .attr('id', function (a) { return 'alignmentPath-' + a._from + '-' + a._to })
+    .attr('id', function (a) { return 'alignmentPath-' + a._from + '--' + a._to })
     .attr('d', function (a) {
-      const fromElem = d3.select('#wordGroup-' + a._from)
-      const toElem = d3.select('#wordGroup-' + a._to)
-      const upOrDown = d3.select('#wordGroup-' + a._from).attr('class') === 'baseWordGroup' ? 'up' : 'down'
-      const alignmentStartY = parseFloat(d3.select('.alignmentsBox-' + a._from.replace(sentIdRE, '') + '--' + a._to.replace(sentIdRE, '')).attr('y'))
+      let fromElem, upOrDown, alignmentStartY
+      if (document.getElementById('wordGroup-' + a._from)) {
+        fromElem = d3.select('#wordGroup-' + a._from)
+        upOrDown = d3.select('#wordGroup-' + a._from).attr('class') === 'baseWordGroup' ? 'up' : 'down'
+      } else {
+        fromElem = null
+        upOrDown = null
+      }
+      const toElem = document.getElementById('wordGroup-' + a._to) ? d3.select('#wordGroup-' + a._to) : null
+      if (document.getElementsByClassName('alignmentsBox-' + a._from.replace(sentIdRE, '') + '--' + a._to.replace(sentIdRE, '')).length > 0) {
+        console.log('I\'m not null!')
+        alignmentStartY = parseFloat(d3.select('.alignmentsBox-' + a._from.replace(sentIdRE, '') + '--' + a._to.replace(sentIdRE, '')).attr('y'))
+      } else {
+        alignmentStartY = 0
+      }
       return getAlignmentPath(fromElem, toElem, upOrDown, alignmentStartY, alignmentsHeight)
     })
     .attr('stroke', 'var(--acorn-gray-D1)')
