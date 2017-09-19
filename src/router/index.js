@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Projects from '@/components/Projects'
 import Texts from '@/components/Texts'
 import Sentences from '@/components/Sentences'
+import Editor from '@/components/Editor'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/projects/:name/:text',
       name: 'Sentences',
       component: Sentences
+    },
+    {
+      path: '/editor',
+      name: 'Editor',
+      component: Editor
     }
   ]
 })

@@ -1,58 +1,19 @@
 <template>
   <div class="page-container" style="margin-right:500px;">
-    <h1>{{ textNameClean }}</h1>
     <div id="sentences-container">
       <!-- <p style="margin-bottom:20px;">
-        <button>create new sentence</button>
-      </p> -->
+          <button>create new sentence</button>
+        </p> -->
       <ul id="sentences-list">
       </ul>
     </div>
-    <div id="editorContainer">
+    <div id="splitter"></div>
+    <div id="editor-container" class="ui-widget-content">
       <div id="editorToolbar">
-        <button @click="getEditorValue">SAVE</button>
+        <a @click="saveEditorValue">SAVE</a>
         <!-- <a href="#">VIEW INVISIBLE CHARS</a> -->
       </div>
       <div id="editor"></div>
-    </div>
-    <div class="modal is-active" id="sentence-modal" v-if="showModal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">
-            Create new sentence
-          </p>
-          <button class="delete" @click="showModal=false"></button>
-        </header>
-        <form id="add-project" action="#" method="POST" @submit.prevent="onSubmit">
-        <section class="modal-card-body">
-          <ul>
-            <li>
-              <label for="name">* Sentence (normal) </label>
-              <input type="text" id="sentence-normal" name="sentence-normal" placeholder="required" v-model="form.sentenceNormal">
-            </li>
-            <li>
-              <label for="base-text" class="label-textarea">Sentence (segmented) </label>
-              <input type="text" id="sentence-segmented" name="sentence-segmented" placeholder="required" v-model="form.sentenceSegmented">
-            </li>
-            <li>
-              <label for="base">* Primary language</label>
-              <input type="text" id="base" name="base" placeholder="required" v-model="form.base">
-            </li>
-            <li>
-              <label for="parallel">Parallel language</label>
-              <input type="text" id="parallel" name="parallel" placeholder="optional" v-model="form.parallel">
-            </li>
-          </ul>
-        </section>
-        <footer class="modal-card-foot">
-          <div>
-            <button>Create</button>
-            <button type="reset">Clear</button>
-          </div>
-        </footer>
-        </form>
-      </div>
     </div>
   </div>
 </template>
@@ -67,12 +28,10 @@ require('brace/mode/perl')
 require('brace/theme/iplastic')
 require('brace/ext/searchbox')
 export default {
-  name: 'sentences',
+  name: 'Editor',
   data () {
     return {
       showModal: false,
-      textName: this.$route.params.text,
-      textNameClean: this.$route.params.text.replace(/-/g, ' '),
       msg: 'PineOak Sentences',
       conll: conll,
       sentenceAlignments: [ // must be queried separately
@@ -132,7 +91,7 @@ export default {
         })
         .catch(err => alert(err))
     },
-    getEditorValue () {
+    saveEditorValue () {
       const editor = ace.edit('editor')
       const newConll = editor.getValue()
       this.conll = newConll
@@ -151,21 +110,26 @@ export default {
   padding: 30px;
   overflow: scroll;
 }
+
 #sentences-container {
   margin-bottom: 60px;
 }
+
 #sentences-list {
   text-align: left;
   font-size: 1.1em;
 }
+
 #sentences-list li {
   margin-bottom: 15px;
 }
+
 .deprelText {
   font-size: 13.8px;
   font-family: Arial, Tahoma, sans-serif;
 }
-#editorContainer {
+
+#editor-container {
   border: 1px var(--acorn-gray-L1) solid;
   resize: both;
   position: fixed;
@@ -173,21 +137,24 @@ export default {
   right: 25px;
   bottom: 25px;
   width: 500px;
+  min-width: 50px;
 }
+
 #editorToolbar {
-  height: 8px;
+  height: 7px;
   text-align: left;
 }
-#editorToolbar > button {
+
+#editorToolbar > a {
   color: var(--acorn-brown-D2);
   margin: 0;
-  padding: 2px 8px;
+  padding: 1px 8px;
   font-size: 10pt;
   background-color: orange;
   border: 1px orange solid;
   border-radius: 0;
-
 }
+
 #editor {
   top: 15px;
   height: 100%;

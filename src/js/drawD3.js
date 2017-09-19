@@ -245,7 +245,6 @@ export function drawD3 (sentences, drawConfig) {
       }
       const toElem = document.getElementById('wordGroup-' + a._to) ? d3.select('#wordGroup-' + a._to) : null
       if (document.getElementsByClassName('alignmentsBox-' + a._from.replace(sentIdRE, '') + '--' + a._to.replace(sentIdRE, '')).length > 0) {
-        console.log('I\'m not null!')
         alignmentStartY = parseFloat(d3.select('.alignmentsBox-' + a._from.replace(sentIdRE, '') + '--' + a._to.replace(sentIdRE, '')).attr('y'))
       } else {
         alignmentStartY = 0

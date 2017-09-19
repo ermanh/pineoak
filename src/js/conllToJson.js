@@ -5,7 +5,6 @@ export function conllToJson (raw) {
   cleaned = cleaned.replace(/\n{2,}/g, '\n\n')
   const baseLang = cleaned.split('\n')[0].replace(/lang1 ?= ?/, '').trim()
   const parallelLang = cleaned.split('\n')[1].replace(/lang2 ?= ?/, '').trim()
-  console.log(baseLang, parallelLang)
   let sents = cleaned.split('\n').slice(3).join('\n').split('\n\n')
   sents = sents.map(sent => sent.split('\n'))
   sents = sents.map(sent => {
