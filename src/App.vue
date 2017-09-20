@@ -94,6 +94,15 @@ button {
   margin: 0;
   padding: 15px;
   background-color: var(--acorn-gray-D1);
+  text-align: left;
+}
+
+.banner-elem {
+  display: inline;
+  padding: 12px;
+  color: var(--acorn-gray-L1);
+  font-size: 1.1em;
+  white-space: nowrap;
 }
 
 .page-container {

@@ -1,10 +1,12 @@
 <template>
 <div class="page-container">
   <div class="banner">
-    <h2>
-      <span style="color:var(--pine-green-L2);">Pine</span><span style="color:var(--acorn-brown-D1);">Oak</span>
-    </h2>
-    <p>Edit and visualize parallel dependency treebanks</p>
+    <div id="logo">
+      <span id="pine">Pine</span><span id="oak">Oak</span>
+    </div>
+    <div class="banner-elem">
+      <span>Edit and visualize parallel dependency treebanks</span>
+    </div>
   </div>
   <div class="content-container">
     <div id="sentences-container">
@@ -120,6 +122,22 @@ export default {
 </script>
 
 <style>
+#pine {
+  font-size: 2em;
+  font-weight: 500;
+  color: var(--acorn-green-M1);
+}
+
+#oak {
+  font-size: 2em;
+  font-weight: 500;
+  color: var(--acorn-brown-D1);
+}
+
+#logo {
+  display: inline-block;
+}
+
 .sentenceBkg {
   background-color: var(--pine-green-L1);
   border: 1px var(--acorn-green-M1) solid;
