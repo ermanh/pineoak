@@ -89,10 +89,29 @@ button {
   border: 1px var(--oak-green-M1) solid;
 }
 
+.banner {
+  height: 70px;
+  margin: 0;
+  padding: 15px;
+  background-color: var(--acorn-gray-D1);
+}
+
 .page-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.content-container {
   display: block;
+  position: fixed;
   text-align: center;
-  margin-top: 55px;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  /* xtouch-action: none; */
 }
 
 .modal-card-body {

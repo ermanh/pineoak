@@ -1,5 +1,12 @@
 <template>
-  <div class="page-container" style="margin-right:500px;">
+<div class="page-container">
+  <div class="banner">
+    <h2>
+      <span style="color:var(--pine-green-L2);">Pine</span><span style="color:var(--acorn-brown-D1);">Oak</span>
+    </h2>
+    <p>Edit and visualize parallel dependency treebanks</p>
+  </div>
+  <div class="content-container">
     <div id="sentences-container">
       <!-- <p style="margin-bottom:20px;">
           <button>create new sentence</button>
@@ -7,8 +14,8 @@
       <ul id="sentences-list">
       </ul>
     </div>
-    <div id="splitter"></div>
-    <div id="editor-container" class="ui-widget-content">
+    <div id="handle"></div>
+    <div id="editor-container">
       <div id="editorToolbar">
         <a @click="saveEditorValue">SAVE</a>
         <!-- <a href="#">VIEW INVISIBLE CHARS</a> -->
@@ -16,6 +23,7 @@
       <div id="editor"></div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -27,6 +35,7 @@ const ace = require('brace')
 require('brace/mode/perl')
 require('brace/theme/iplastic')
 require('brace/ext/searchbox')
+const Split = require('split.js')
 export default {
   name: 'Editor',
   data () {
@@ -71,9 +80,18 @@ export default {
     editor.$blockScrolling = Infinity
     editor.setTheme('ace/theme/iplastic')
     editor.setValue(this.conll)
-    // editor.selection.moveTo(0, 0)
+    editor.selection.moveTo(0, 0)
 
     drawD3(this.sentences, this.drawConfig)
+
+    Split(['#sentences-container', '#editor-container'], {
+      sizes: [50, 50],
+      minSize: [100, 52],
+      gutterSize: 5,
+      direction: 'horizontal',
+      cursor: 'col-resize'
+    })
+
     console.log('Everything mounted!')
   },
 
@@ -106,18 +124,22 @@ export default {
   background-color: var(--pine-green-L1);
   border: 1px var(--acorn-green-M1) solid;
   border-radius: 0.5em;
-  margin: 0 50px;
+  margin: 0 15px;
   padding: 30px;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 
 #sentences-container {
-  margin-bottom: 60px;
+  min-width: 100px;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
 }
 
 #sentences-list {
   text-align: left;
   font-size: 1.1em;
+  padding-top: 15px;
 }
 
 #sentences-list li {
@@ -130,19 +152,19 @@ export default {
 }
 
 #editor-container {
-  border: 1px var(--acorn-gray-L1) solid;
-  resize: both;
-  position: fixed;
-  top: 25px;
-  right: 25px;
-  bottom: 25px;
-  width: 500px;
+  height: 100%;
   min-width: 50px;
+  width: 100%;
+  overflow: scroll;
 }
 
 #editorToolbar {
-  height: 7px;
+  position: fixed;
+  top: 70px;
+  right: 0;
+  height: 23px;
   text-align: left;
+  z-index: 5;
 }
 
 #editorToolbar > a {
@@ -153,11 +175,18 @@ export default {
   background-color: orange;
   border: 1px orange solid;
   border-radius: 0;
+  opacity: 0.85;
 }
 
 #editor {
-  top: 15px;
   height: 100%;
-  width: 100%;
+  min-width: 50px;
+  overflow: scroll;
+}
+
+.gutter {
+  background-color: var(--acorn-gray-M1);
+  opacity: 0.5;
+  cursor: col-resize;
 }
 </style>
