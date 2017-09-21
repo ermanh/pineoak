@@ -97,13 +97,7 @@ export default {
 
     drawGutterGrip()
 
-    d3.selectAll('g.wordGroup')
-      .on('mouseenter', function () {
-        d3.select(this).select('rect').classed('word-box-highlight', true)
-      })
-      .on('mouseleave', function () {
-        d3.select(this).select('rect').classed('word-box-highlight', false)
-      })
+    this.enableHover()
 
     console.log('Everything mounted!')
   },
@@ -126,7 +120,154 @@ export default {
       const editor = ace.edit('editor')
       const newConll = editor.getValue()
       this.conll = newConll
+      editor.$blockScrolling = Infinity
+      editor.selection.moveTo(0, 0)
       drawD3(this.sentences, this.drawConfig)
+      this.enableHover()
+    },
+    enableHover () {
+      // Word Group and Alignments hover-highlighting
+      d3.selectAll('g.wordGroup')
+        .on('mouseenter', function () {
+          d3.select(this).select('rect').classed('word-box-hover', true)
+          const _from = d3.select(this).attr('word-id')
+          const alignmentsFrom = d3.selectAll('.alignmentPath[_from="' + _from + '"]')
+          const alignmentsTo = d3.selectAll('.alignmentPath[_to="' + _from + '"]')
+          alignmentsFrom.classed('alignment-hover', true)
+          alignmentsTo.classed('alignment-hover', true)
+          alignmentsFrom.each(function (d, i) {
+            d3.select('g[word-id="' + d._to + '"]')
+              .select('rect').classed('word-box-hover', true)
+            d3.select('g[word-id="' + d._from + '"]')
+              .select('rect').classed('word-box-hover', true)
+            // reverse paths
+            d3.selectAll('.alignmentPath[_to="' + d._to + '"]')
+              .classed('alignment-hover', true)
+            // reverse aligned words
+            d3.selectAll('.alignmentPath[_to="' + d._to + '"]').each(function (d, i) {
+              d3.select('g[word-id="' + d._from + '"]')
+                .select('rect').classed('word-box-hover', true)
+            })
+          })
+          alignmentsTo.each(function (d, i) {
+            d3.select('g[word-id="' + d._to + '"]')
+              .select('rect').classed('word-box-hover', true)
+            d3.select('g[word-id="' + d._from + '"]')
+              .select('rect').classed('word-box-hover', true)
+            // reverse paths
+            d3.selectAll('.alignmentPath[_from="' + d._from + '"]')
+              .classed('alignment-hover', true)
+            // reverse aligned words
+            d3.selectAll('.alignmentPath[_from="' + d._from + '"]').each(function (d, i) {
+              d3.select('g[word-id="' + d._to + '"]')
+                .select('rect').classed('word-box-hover', true)
+            })
+          })
+        })
+        .on('mouseleave', function () {
+          d3.select(this).select('rect').classed('word-box-hover', false)
+          let _from = d3.select(this).attr('word-id')
+          let alignmentsFrom = d3.selectAll('.alignmentPath[_from="' + _from + '"]')
+          let alignmentsTo = d3.selectAll('.alignmentPath[_to="' + _from + '"]')
+          alignmentsFrom.classed('alignment-hover', false)
+          alignmentsTo.classed('alignment-hover', false)
+          alignmentsFrom.each(function (d, i) {
+            d3.select('g[word-id="' + d._to + '"]')
+              .select('rect').classed('word-box-hover', false)
+            d3.select('g[word-id="' + d._from + '"]')
+              .select('rect').classed('word-box-hover', false)
+            // reverse paths
+            d3.selectAll('.alignmentPath[_to="' + d._to + '"]')
+              .classed('alignment-hover', false)
+            // reverse aligned words
+            d3.selectAll('.alignmentPath[_to="' + d._to + '"]').each(function (d, i) {
+              d3.select('g[word-id="' + d._from + '"]')
+                .select('rect').classed('word-box-hover', false)
+            })
+          })
+          alignmentsTo.each(function (d, i) {
+            d3.select('g[word-id="' + d._to + '"]')
+              .select('rect').classed('word-box-hover', false)
+            d3.select('g[word-id="' + d._from + '"]')
+              .select('rect').classed('word-box-hover', false)
+            // reverse paths
+            d3.selectAll('.alignmentPath[_from="' + d._from + '"]')
+              .classed('alignment-hover', false)
+            // reverse aligned words
+            d3.selectAll('.alignmentPath[_from="' + d._from + '"]').each(function (d, i) {
+              d3.select('g[word-id="' + d._to + '"]')
+                .select('rect').classed('word-box-hover', false)
+            })
+          })
+        })
+
+      // Deprel hover-highlighting
+      d3.selectAll('.deprelBox')
+        .on('mouseenter', function () {
+          d3.select(this).classed('deprel-box-hover', true)
+          d3.select(this.parentNode).select('text').classed('deprel-text-hover', true)
+          d3.select(this.parentNode).select('.pathLine').classed('deprel-line-hover', true)
+          d3.select(this.parentNode).select('.pathArrow').classed('deprel-arrow-hover', true)
+          const _from = d3.select(this.parentNode).attr('_from')
+          const _to = d3.select(this.parentNode).attr('_to')
+          const _fromNode = d3.select('g[word-id="' + _from + '"]')
+          const _toNode = d3.select('g[word-id="' + _to + '"]')
+          _fromNode.select('rect').classed('deprel-wordbox-hover', true)
+          _fromNode.select('text.word').classed('deprel-word-hover', true)
+          _fromNode.select('text.tag').classed('deprel-tag-hover', true)
+          _toNode.select('rect').classed('deprel-wordbox-hover', true)
+          _toNode.select('text.word').classed('deprel-word-hover', true)
+          _toNode.select('text.tag').classed('deprel-tag-hover', true)
+        })
+        .on('mouseleave', function () {
+          d3.select(this).classed('deprel-box-hover', false)
+          d3.select(this.parentNode).select('text').classed('deprel-text-hover', false)
+          d3.select(this.parentNode).select('.pathLine').classed('deprel-line-hover', false)
+          d3.select(this.parentNode).select('.pathArrow').classed('deprel-arrow-hover', false)
+          const _from = d3.select(this.parentNode).attr('_from')
+          const _to = d3.select(this.parentNode).attr('_to')
+          const _fromNode = d3.select('g[word-id="' + _from + '"]')
+          const _toNode = d3.select('g[word-id="' + _to + '"]')
+          _fromNode.select('rect').classed('deprel-wordbox-hover', false)
+          _fromNode.select('text.word').classed('deprel-word-hover', false)
+          _fromNode.select('text.tag').classed('deprel-tag-hover', false)
+          _toNode.select('rect').classed('deprel-wordbox-hover', false)
+          _toNode.select('text.word').classed('deprel-word-hover', false)
+          _toNode.select('text.tag').classed('deprel-tag-hover', false)
+        })
+      d3.selectAll('.deprelText')
+        .on('mouseenter', function () {
+          d3.select(this).classed('deprel-text-hover', true)
+          d3.select(this.parentNode).select('.deprelBox').classed('deprel-box-hover', true)
+          d3.select(this.parentNode).select('.pathLine').classed('deprel-line-hover', true)
+          d3.select(this.parentNode).select('.pathArrow').classed('deprel-arrow-hover', true)
+          const _from = d3.select(this.parentNode).attr('_from')
+          const _to = d3.select(this.parentNode).attr('_to')
+          const _fromNode = d3.select('g[word-id="' + _from + '"]')
+          const _toNode = d3.select('g[word-id="' + _to + '"]')
+          _fromNode.select('rect').classed('deprel-wordbox-hover', true)
+          _fromNode.select('text.word').classed('deprel-word-hover', true)
+          _fromNode.select('text.tag').classed('deprel-tag-hover', true)
+          _toNode.select('rect').classed('deprel-wordbox-hover', true)
+          _toNode.select('text.word').classed('deprel-word-hover', true)
+          _toNode.select('text.tag').classed('deprel-tag-hover', true)
+        })
+        .on('mouseleave', function () {
+          d3.select(this).classed('deprel-text-hover', false)
+          d3.select(this.parentNode).select('.deprelBox').classed('deprel-box-hover', false)
+          d3.select(this.parentNode).select('.pathLine').classed('deprel-line-hover', false)
+          d3.select(this.parentNode).select('.pathArrow').classed('deprel-arrow-hover', false)
+          const _from = d3.select(this.parentNode).attr('_from')
+          const _to = d3.select(this.parentNode).attr('_to')
+          const _fromNode = d3.select('g[word-id="' + _from + '"]')
+          const _toNode = d3.select('g[word-id="' + _to + '"]')
+          _fromNode.select('rect').classed('deprel-wordbox-hover', false)
+          _fromNode.select('text.word').classed('deprel-word-hover', false)
+          _fromNode.select('text.tag').classed('deprel-tag-hover', false)
+          _toNode.select('rect').classed('deprel-wordbox-hover', false)
+          _toNode.select('text.word').classed('deprel-word-hover', false)
+          _toNode.select('text.tag').classed('deprel-tag-hover', false)
+        })
     }
   }
 }

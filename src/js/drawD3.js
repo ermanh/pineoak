@@ -1,6 +1,10 @@
 const d3 = require('d3')
 
 export function drawD3 (sentences, drawConfig) {
+  if (!sentences || sentences === '') {
+    d3.select('#sentences-list').selectAll('li').remove()
+  }
+
   const { getWidth, getHeight, getTextWidth, getAlignmentStartY } = require('../js/svgDimensions')
   const { getWordsWithDimensions } = require('../js/wordsInSvg')
   const { getPath, getDeprelPathArrow, getAlignmentPath } = require('../js/paths.js')
@@ -259,5 +263,5 @@ export function drawD3 (sentences, drawConfig) {
       return getAlignmentPath(fromElem, toElem, upOrDown, alignmentStartY, alignmentsHeight)
     })
     .attr('stroke', 'var(--acorn-gray-D1)')
-    .attr('stroke-width', '0.8')
+    .attr('stroke-width', '0.5')
 }

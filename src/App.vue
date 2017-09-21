@@ -175,12 +175,46 @@ button {
   background-color: var(--acorn-brown-M1);
 }
 
-.word-box-highlight {
+.word-box-hover {
   fill: #ffee3a;
-  border: 1px #ffee3a solid;
+  stroke: orangered;
+  stroke-width: 1.5px;
 }
 
-.alignment-highlight {
+.alignment-hover {
   stroke: orangered;
+  stroke-width: 1.5px;
 }
+
+.deprel-box-hover, .deprel-arrow-hover {
+  fill: darkcyan;
+  stroke: darkcyan;
+  stroke-width: 1.65px;
+  z-index: 1001;
+}
+
+.deprel-text-hover {
+  fill: white;
+  z-index: 1002;
+}
+
+.deprel-line-hover {
+  stroke: darkcyan;
+  stroke-width: 1.65px;
+  z-index: 1000;
+}
+
+.deprel-wordbox-hover {
+  fill: #d3eeff;
+  stroke: darkcyan;
+  stroke-width: 1.5px;
+}
+
+/* .deprel-word-hover {
+  fill: white;
+}
+
+.deprel-tag-hover {
+  fill: var(--acorn-gray-L1);
+} */
 </style>

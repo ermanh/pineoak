@@ -1,11 +1,16 @@
 /* jshint esversion:6 */
 
 export function conllToJson (raw) {
+  if (raw === '' || !raw) return ''
+  if (!raw.includes('-----')) return ''
   let cleaned = raw.replace(/\r/g, '').trim()
   cleaned = cleaned.replace(/\n{2,}/g, '\n\n')
-  const baseLang = cleaned.split('\n')[0].replace(/lang1 ?= ?/, '').trim()
-  const parallelLang = cleaned.split('\n')[1].replace(/lang2 ?= ?/, '').trim()
-  let sents = cleaned.split('\n').slice(3).join('\n').split('\n\n')
+  const split = cleaned.replace(/-{5,}[\w '"\\/_+-]+?-{5,}\n*/, '*%^%*').split('*%^%*')
+  if (split[1].trim() === '') return ''
+  const configs = split[0]
+  const baseLang = configs.split('\n')[0].replace(/lang1 ?= ?/, '').trim()
+  const parallelLang = configs.split('\n')[1].replace(/lang2 ?= ?/, '').trim()
+  let sents = split[1].split('\n\n')
   sents = sents.map(sent => sent.split('\n'))
   sents = sents.map(sent => {
     let textID, sentID, language, order, sentence
@@ -39,21 +44,29 @@ export function conllToJson (raw) {
         alignedIDs.forEach(alignedID => {
           const _from = (language === baseLang) ? selfID : alignedID
           const _to = (language === baseLang) ? alignedID : selfID
-          alignments.push({ _from: _from, _to: _to })
+          const alignedTextID = alignedID.replace(/-.+?-.+?_\d+$/, '')
+          if (alignedTextID === textID) {
+            alignments.push({ _from: _from, _to: _to })
+          }
         })
       }
     })
-    return {
-      language: language,
-      textID: textID,
-      _key: sentID,
-      order: order,
-      sentence: sentence,
-      words: words,
-      deprels: deprels,
-      alignments: alignments
+    if ([baseLang, parallelLang].includes(language)) {
+      return {
+        language: language,
+        textID: textID,
+        _key: sentID,
+        order: order,
+        sentence: sentence,
+        words: words,
+        deprels: deprels,
+        alignments: alignments
+      }
+    } else {
+      return 'bad acorn'
     }
   })
+  sents = sents.filter(sent => sent !== 'bad acorn')
   let newSentsObj = {}
   sents.forEach(sent => {
     const sentObj = { _key: sent._key, order: sent.order, sentence: sent.sentence, words: sent.words }

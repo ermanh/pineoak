@@ -21,34 +21,6 @@
     <script>
       var $j = jQuery.noConflict();
       $j(document).ready(function() {
-        $j(".wordGroup").on({
-          mouseenter: function() {
-            $j(this).find('rect').addClass('word-box-highlight');
-            var _from = $j(this).attr('word-id');
-            var alignmentsFrom = $j('.alignmentPath[_from="' + _from + '"]');
-            var alignmentsTo = $j('.alignmentPath[_to="' + _from + '"]');
-            alignmentsFrom.addClass('alignment-highlight');
-            alignmentsTo.addClass('alignment-highlight');
-            var aligneds = new Set(
-              alignmentsFrom.map(function () { return $j(this).attr('_to'); }).get()
-              .concat(alignmentsTo.map(function () { return $j(this).attr('_from'); }).get())
-            );
-            aligneds.forEach(function(item){$j('g[word-id="' + item + '"]').find('rect').addClass('word-box-highlight');});
-          },
-          mouseleave: function() {
-            $j(this).find('rect').removeClass('word-box-highlight');
-            var _from = $j(this).attr('word-id');
-            var alignmentsFrom = $j('.alignmentPath[_from="' + _from + '"]');
-              var alignmentsTo = $j('.alignmentPath[_to="' + _from + '"]');
-              alignmentsFrom.removeClass('alignment-highlight');
-              alignmentsTo.removeClass('alignment-highlight');
-              var aligneds = new Set(
-                alignmentsFrom.map(function () { return $j(this).attr('_to'); }).get()
-                  .concat(alignmentsTo.map(function () { return $j(this).attr('_from'); }).get())
-              );
-              aligneds.forEach(function (item) { $j('g[word-id="' + item + '"]').find('rect').removeClass('word-box-highlight'); });
-          }
-        })
       });
     </script>
   </body>
