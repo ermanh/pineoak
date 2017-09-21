@@ -2,6 +2,7 @@
 const d3 = require('d3')
 
 export function getWidth (baseWords, parallelWords, widthBetweenWords, fontSpec, tagFontSpec) {
+  const adjustment = 15
   const baseTextWidth = baseWords.reduce((accum, obj) => {
     return accum + d3.max([getTextWidth(obj.word, fontSpec), getTextWidth(obj.tag, tagFontSpec)])
   }, 0)
@@ -12,7 +13,7 @@ export function getWidth (baseWords, parallelWords, widthBetweenWords, fontSpec,
   const baseTotalLength = baseTextWidth + baseWords.length * widthBetweenWords * 2
   const parallelTotalLength = parallelTextWidth + parallelWords.length * widthBetweenWords * 2
 
-  const width = d3.max([baseTotalLength, parallelTotalLength])
+  const width = d3.max([baseTotalLength, parallelTotalLength]) + adjustment
   const baseOrParallelLonger = width === baseTotalLength ? 'base' : 'parallel'
   const longerBy = Math.abs(baseTotalLength - parallelTotalLength)
   return { width: width, baseOrParallelLonger: baseOrParallelLonger, longerBy: longerBy }

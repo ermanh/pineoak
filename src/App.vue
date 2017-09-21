@@ -177,12 +177,12 @@ button {
 
 .word-box-hover {
   fill: #ffee3a;
-  stroke: orangered;
+  stroke: #ef6909;
   stroke-width: 1.5px;
 }
 
 .alignment-hover {
-  stroke: orangered;
+  stroke: #ef6909;
   stroke-width: 1.5px;
 }
 
