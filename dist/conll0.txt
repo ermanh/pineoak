@@ -1,0 +1,85 @@
+lang1 = wiy
+lang2 = eng
+---------- enter treebank data below ----------
+
+# sent_id = sample-1/wiy
+# text = Kitko kowoliswilh.
+1	kitko	_	AUX	_	_	2	aux	_	sample-1/eng#2,sample-1/eng#3,sample-1/eng#4
+2	kowoliswilh	_	VERB	_	_	0	root	_	sample-1/eng#5,sample-1/eng#6,sample-1/eng#7
+3	.	_	PUNCT	_	_	2	punct	_	sample-1/eng#8
+
+# sent_id = sample-1/eng
+# text = He's going to start to sing.
+1	he	_	PRON	_	_	3	nsubj	_	_
+2	is	_	AUX	_	_	3	aux	_	sample-1/wiy#1
+3	going	_	VERB	_	_	0	root	_	sample-1/wiy#1
+4	to	_	PART	_	_	5	mark	_	sample-1/wiy#1
+5	start	_	VERB	_	_	3	xcomp	_	sample-1/wiy#2
+6	to	_	PART	_	_	7	mark	_	sample-1/wiy#2
+7	sing	_	VERB	_	_	5	xcomp	_	sample-1/wiy#2
+8	.	_	PUNCT	_	_	3	punct	_	sample-1/wiy#3
+
+# sent_id = sample-2/wiy
+# text = Ho'rach kitko kowa boyaga'rabiyutw.
+1	ho'rach	_	NOUN	_	_	4	obj	_	sample-2/eng#9
+2	kitko	_	AUX	_	_	4	aux	_	sample-2/eng#2,sample-2/eng#3,sample-2/eng#4
+3	kowa	_	AUX	_	_	4	aux	_	_
+4	boyaga'rabiyutw	_	VERB	_	_	0	root	_	sample-2/eng#5,sample-2/eng#6,sample-2/eng#7,sample-2/eng#8
+5	.	_	PUNCT	_	_	4	punct	_	sample-2/eng#10
+
+# sent_id = sample-2/eng
+# text = I'm going to tell a story about Snake.
+1	I	_	PRON	_	_	3	nsubj	_	_
+2	am	_	AUX	_	_	3	aux	_	sample-2/wiy#2
+3	going	_	VERB	_	_	0	root	_	sample-2/wiy#2
+4	to	_	PART	_	_	5	mark	_	sample-2/wiy#2
+5	tell	_	VERB	_	_	3	xcomp	_	sample-2/wiy#4
+6	a	_	DET	_	_	7	det	_	sample-2/wiy#4
+7	story	_	NOUN	_	_	5	obj	_	sample-2/wiy#4
+8	about	_	PREP	_	_	9	case	_	sample-2/wiy#4
+9	Snake	_	NOUN	_	_	7	nmod	_	sample-2/wiy#1
+10	.	_	PUNCT	_	_	3	punct	_	sample-2/wiy#5
+
+# sent_id = sample-3/wiy
+# text = Kuts katagana dakw hu tobiwi', to pat ki to diyabakwilh, to warog ki to diyabakwilh...
+1	kuts	_	ADV	_	_	3	adv	_	sample-3/eng#4
+2	katagana	_	ADV	_	_	3	adv	_	sample-3/eng#3
+3	dakw	_	VERB	_	_	0	root	_	sample-3/eng#2
+4	hu	_	PART	_	_	5	mark	_	sample-3/eng#5
+5	tobiwi'	_	NOUN	_	_	3	dislocated:nsubj	_	sample-3/eng#5
+6	,	_	PUNCT	_	_	11	punct	_	sample-3/eng#6
+7	to	_	AUX	_	_	11	dep	_	_
+8	pat	_	NOUN	_	_	11	nsubj	_	sample-3/eng#7
+9	ki	_	ADV	_	_	11	adv	_	sample-3/eng#8
+10	to	_	AUX	_	_	11	aux	_	_
+11	diyabakwilh	_	VERB	_	_	3	parataxis	_	sample-3/eng#9
+12	,	_	PUNCT	_	_	17	punct	_	sample-3/eng#13
+13	to	_	AUX	_	_	17	dep	_	_
+14	warog	_	NOUN	_	_	17	nsubj	_	sample-3/eng#14
+15	ki	_	ADV	_	_	17	adv	_	sample-3/eng#15
+16	to	_	AUX	_	_	17	aux	_	_
+17	diyabakwilh	_	VERB	_	_	11	conj	_	sample-3/eng#16
+18	...	_	PUNCT	_	_	3	punct	_	sample-3/eng#20
+
+# sent_id = sample-3/eng
+# text = It's very nice eating, soot never sticks to it much, coals never stick to it much...
+1	It	_	PRON	_	_	5	nsubj	_	_
+2	is	_	AUX	_	_	5	cop	_	sample-3/wiy#3
+3	very	_	ADV	_	_	4	adv	_	sample-3/wiy#2
+4	nice	_	ADJ	_	_	5	adj	_	sample-3/wiy#1
+5	eating	_	NOUN	_	_	0	root	_	sample-3/wiy#4,sample-3/wiy#5
+6	,	_	PUNCT	_	_	7	det	_	sample-3/wiy#6
+7	soot	_	NOUN	_	_	9	nsubj	_	sample-3/wiy#8
+8	never	_	ADV	_	_	9	adv	_	sample-3/wiy#9
+9	sticks	_	VERB	_	_	5	parataxis	_	sample-3/wiy#11
+10	to	_	PREP	_	_	11	case	_	_
+11	it	_	PRON	_	_	9	obl	_	_
+12	much	_	ADV	_	_	9	adv	_	_
+13	,	_	PUNCT	_	_	16	punct	_	sample-3/wiy#12
+14	coals	_	NOUN	_	_	16	nsubj	_	sample-3/wiy#14
+15	never	_	ADV	_	_	16	adv	_	sample-3/wiy#15
+16	stick	_	VERB	_	_	9	conj	_	sample-3/wiy#17
+17	to	_	PREP	_	_	18	case	_	_
+18	it	_	PRON	_	_	16	obl	_	_
+19	much	_	ADV	_	_	16	adv	_	_
+20	...	_	PUNCT	_	_	5	punct	_	sample-3/wiy#18
