@@ -38,6 +38,8 @@ require('brace/mode/perl')
 require('brace/theme/iplastic')
 require('brace/ext/searchbox')
 const Split = require('split.js')
+const { drawGutterGrip } = require('../js/gutterGrip')
+
 export default {
   name: 'Editor',
   data () {
@@ -89,10 +91,12 @@ export default {
     Split(['#sentences-container', '#editor-container'], {
       sizes: [50, 50],
       minSize: [100, 52],
-      gutterSize: 5,
+      gutterSize: 10,
       direction: 'horizontal',
       cursor: 'col-resize'
     })
+
+    drawGutterGrip()
 
     console.log('Everything mounted!')
   },
@@ -204,7 +208,7 @@ export default {
 
 .gutter {
   background-color: var(--acorn-gray-M1);
-  opacity: 0.5;
+  opacity: 0.8;
   cursor: col-resize;
 }
 </style>
