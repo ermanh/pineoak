@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>PineOak</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.3/css/bulma.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
     body { 
       font-family: 'Avenir', Helvetica, Arial, sans-serif; 
@@ -19,15 +18,37 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
       var $j = jQuery.noConflict();
       $j(document).ready(function() {
-        $j('#editor-container').resizable({
-          handleSelector: "#handle",
-          resizeHeight: false,
-        });
-        // $j("#editor-container").resizable({ handles: 'w' });
+        $j(".wordGroup").on({
+          mouseenter: function() {
+            $j(this).find('rect').addClass('word-box-highlight');
+            var _from = $j(this).attr('word-id');
+            var alignmentsFrom = $j('.alignmentPath[_from="' + _from + '"]');
+            var alignmentsTo = $j('.alignmentPath[_to="' + _from + '"]');
+            alignmentsFrom.addClass('alignment-highlight');
+            alignmentsTo.addClass('alignment-highlight');
+            var aligneds = new Set(
+              alignmentsFrom.map(function () { return $j(this).attr('_to'); }).get()
+              .concat(alignmentsTo.map(function () { return $j(this).attr('_from'); }).get())
+            );
+            aligneds.forEach(function(item){$j('g[word-id="' + item + '"]').find('rect').addClass('word-box-highlight');});
+          },
+          mouseleave: function() {
+            $j(this).find('rect').removeClass('word-box-highlight');
+            var _from = $j(this).attr('word-id');
+            var alignmentsFrom = $j('.alignmentPath[_from="' + _from + '"]');
+              var alignmentsTo = $j('.alignmentPath[_to="' + _from + '"]');
+              alignmentsFrom.removeClass('alignment-highlight');
+              alignmentsTo.removeClass('alignment-highlight');
+              var aligneds = new Set(
+                alignmentsFrom.map(function () { return $j(this).attr('_to'); }).get()
+                  .concat(alignmentsTo.map(function () { return $j(this).attr('_from'); }).get())
+              );
+              aligneds.forEach(function (item) { $j('g[word-id="' + item + '"]').find('rect').removeClass('word-box-highlight'); });
+          }
+        })
       });
     </script>
   </body>

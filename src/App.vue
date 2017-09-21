@@ -101,8 +101,9 @@ button {
   display: inline;
   padding: 12px;
   color: var(--acorn-gray-L1);
-  font-size: 1.1em;
+  font-size: 1.2em;
   white-space: nowrap;
+  padding-left: 15px;
 }
 
 .page-container {
@@ -172,5 +173,14 @@ button {
 
 #add-item li {
   background-color: var(--acorn-brown-M1);
+}
+
+.word-box-highlight {
+  fill: #ffee3a;
+  border: 1px #ffee3a solid;
+}
+
+.alignment-highlight {
+  stroke: orangered;
 }
 </style>

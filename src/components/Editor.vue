@@ -20,7 +20,6 @@
     <div id="editor-container">
       <div id="editorToolbar">
         <a @click="saveEditorValue">SAVE</a>
-        <!-- <a href="#">VIEW INVISIBLE CHARS</a> -->
       </div>
       <div id="editor"></div>
     </div>
@@ -29,7 +28,7 @@
 </template>
 
 <script>
-// const d3 = require('d3')
+const d3 = require('d3')
 const { drawD3 } = require('../js/drawD3')
 const { conll } = require('../js/conll')
 const { conllToJson } = require('../js/conllToJson')
@@ -97,6 +96,14 @@ export default {
     })
 
     drawGutterGrip()
+
+    d3.selectAll('g.wordGroup')
+      .on('mouseenter', function () {
+        d3.select(this).select('rect').classed('word-box-highlight', true)
+      })
+      .on('mouseleave', function () {
+        d3.select(this).select('rect').classed('word-box-highlight', false)
+      })
 
     console.log('Everything mounted!')
   },

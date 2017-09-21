@@ -27,6 +27,7 @@ export function drawD3 (sentences, drawConfig) {
     .attr('height', function (d) { return getHeight(d.baseSentence.words, d.parallelSentence.words, d.parallelSentence.isEmpty, mainSentenceHeight, alignmentsHeight, singleLineHeight, singleDeprelHeight, firstDeprelHeight, treetopSpace) })
 
   const base = svg.append('g')
+    .attr('class', 'base')
     .attr('id', function (d) { return 'baseSentence-' + d.baseSentence.order })
 
   const baseSentence = base.append('text')
@@ -48,10 +49,11 @@ export function drawD3 (sentences, drawConfig) {
     })
     .enter()
     .append('g')
-    .attr('class', 'baseWordGroup')
+    .attr('class', 'baseWordGroup wordGroup')
     .attr('id', function (w) { return 'wordGroup-' + w._key })
     .attr('order', function (w) { return w.order })
     .attr('wordGroupWidth', function (w) { return w.wordGroupWidth })
+    .attr('word-id', function (w) { return w._key })
 
   const baseWordBox = baseWordGroups.append('rect')
     .attr('class', 'wordBox')
@@ -136,10 +138,11 @@ export function drawD3 (sentences, drawConfig) {
     })
     .enter()
     .append('g')
-    .attr('class', 'parallelWordGroup')
+    .attr('class', 'parallelWordGroup wordGroup')
     .attr('id', function (w) { return 'wordGroup-' + w._key })
     .attr('order', function (w) { return w.order })
     .attr('wordGroupWidth', function (w) { return w.wordGroupWidth })
+    .attr('word-id', function (w) { return w._key })
 
   const parallelWordBox = parallelWordGroups.append('rect')
     .attr('class', 'wordBox')
@@ -180,14 +183,16 @@ export function drawD3 (sentences, drawConfig) {
     .enter()
     .append('g')
     .attr('class', 'deprelGroup')
-    .attr('id', function (d) { return 'deprel-' + d._from + '-' + d._to })
+    .attr('id', function (d) { return 'deprel-' + d._from + '--' + d._to })
+    .attr('_from', function (d) { return d._from })
+    .attr('_to', function (d) { return d._to })
 
   const deprelPaths = deprels.append('path')
-    .attr('class', function (d) { return d.deprel })
+    .attr('class', function (d) { return 'pathLine ' + d.deprel })
     .attr('d', function (d) {
       const fromElem = d3.select('#wordGroup-' + d._from)
       const toElem = d3.select('#wordGroup-' + d._to)
-      const upOrDown = d3.select('#wordGroup-' + d._from).attr('class') === 'baseWordGroup' ? 'up' : 'down'
+      const upOrDown = d3.select('#wordGroup-' + d._from).attr('class').includes('baseWordGroup') ? 'up' : 'down'
       return getPath(d, fromElem, toElem, upOrDown, singleDeprelHeight, firstDeprelHeight)
     })
     .attr('stroke', 'var(--acorn-gray-D1)')
@@ -233,12 +238,14 @@ export function drawD3 (sentences, drawConfig) {
     .enter()
     .append('path')
     .attr('class', 'alignmentPath')
+    .attr('_from', function (d) { return d._from })
+    .attr('_to', function (d) { return d._to })
     .attr('id', function (a) { return 'alignmentPath-' + a._from + '--' + a._to })
     .attr('d', function (a) {
       let fromElem, upOrDown, alignmentStartY
       if (document.getElementById('wordGroup-' + a._from)) {
         fromElem = d3.select('#wordGroup-' + a._from)
-        upOrDown = d3.select('#wordGroup-' + a._from).attr('class') === 'baseWordGroup' ? 'up' : 'down'
+        upOrDown = d3.select('#wordGroup-' + a._from).attr('class').includes('baseWordGroup') ? 'up' : 'down'
       } else {
         fromElem = null
         upOrDown = null
