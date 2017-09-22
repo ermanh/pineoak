@@ -194,11 +194,11 @@ button {
 
 .alignment-hover {
   stroke: #ef6909;
-  stroke-width: 1.5px;
+  stroke-width: 1.8px;
 }
 .alignment-clicked {
   stroke: #ef6909;
-  stroke-width: 1.5px!important;
+  stroke-width: 1.8px!important;
 }
 
 .deprel-box-hover, .deprel-arrow-hover {
