@@ -90,9 +90,9 @@ button {
 }
 
 .banner {
-  height: 64px;
+  height: 70px;
   margin: 0;
-  padding: 12px 23px;
+  padding: 15px 28px;
   background-color: var(--acorn-gray-D1);
   text-align: left;
 }
@@ -102,7 +102,7 @@ button {
   color: var(--acorn-gray-L1);
   font-size: 1.2em;
   white-space: nowrap;
-  padding-left: 18px;
+  padding-left: 23px;
   letter-spacing: 0.01em;
 }
 
@@ -115,7 +115,7 @@ button {
   display: block;
   position: fixed;
   text-align: center;
-  top: 64px;
+  top: 70px;
   left: 0;
   right: 0;
   bottom: 0;
