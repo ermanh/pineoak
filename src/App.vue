@@ -90,20 +90,20 @@ button {
 }
 
 .banner {
-  height: 70px;
+  height: 64px;
   margin: 0;
-  padding: 15px;
+  padding: 12px 23px;
   background-color: var(--acorn-gray-D1);
   text-align: left;
 }
 
 .banner-elem {
   display: inline;
-  padding: 12px;
   color: var(--acorn-gray-L1);
   font-size: 1.2em;
   white-space: nowrap;
-  padding-left: 15px;
+  padding-left: 18px;
+  letter-spacing: 0.01em;
 }
 
 .page-container {
@@ -115,7 +115,7 @@ button {
   display: block;
   position: fixed;
   text-align: center;
-  top: 70px;
+  top: 64px;
   left: 0;
   right: 0;
   bottom: 0;

@@ -5,7 +5,7 @@
       <span id="pine">Pine</span><span id="oak">Oak</span>
     </div>
     <div class="banner-elem">
-      <span>Edit and visualize parallel dependency treebanks</span>
+      <span>Edit and visualize parallel treebanks</span>
     </div>
   </div>
   <div class="content-container">
