@@ -180,28 +180,55 @@ button {
   stroke: #ef6909;
   stroke-width: 1.5px;
 }
+.word-box-clicked {
+  stroke: #ef6909!important;
+  fill: #ef6909!important;
+  stroke-width: 1.5px!important;
+}
+.word-text-clicked {
+  fill: white!important;
+}
+.word-tag-clicked {
+  fill: white!important;
+}
 
 .alignment-hover {
   stroke: #ef6909;
   stroke-width: 1.5px;
+}
+.alignment-clicked {
+  stroke: #ef6909;
+  stroke-width: 1.5px!important;
 }
 
 .deprel-box-hover, .deprel-arrow-hover {
   fill: darkcyan;
   stroke: darkcyan;
   stroke-width: 1.65px;
-  z-index: 1001;
+  /* z-index: 1001; */
+}
+.deprel-box-clicked, .deprel-arrow-clicked {
+  fill: steelblue!important;
+  stroke: steelblue!important;
+  stroke-width: 1.65px!important;
 }
 
 .deprel-text-hover {
   fill: white;
-  z-index: 1002;
+  /* z-index: 1002; */
+}
+.deprel-text-clicked {
+  fill: white!important;
 }
 
 .deprel-line-hover {
   stroke: darkcyan;
   stroke-width: 1.65px;
-  z-index: 1000;
+  /* z-index: 1000; */
+}
+.deprel-line-clicked {
+  stroke: steelblue!important;
+  stroke-width: 1.65px!important;
 }
 
 .deprel-wordbox-hover {
@@ -209,12 +236,17 @@ button {
   stroke: darkcyan;
   stroke-width: 1.5px;
 }
-
-/* .deprel-word-hover {
-  fill: white;
+.deprel-wordbox-clicked {
+  fill: steelblue!important;
+  stroke: steelblue!important;
+  stroke-width: 1.5px!important;
 }
 
-.deprel-tag-hover {
-  fill: var(--acorn-gray-L1);
-} */
+.deprel-word-clicked {
+  fill: white!important;
+}
+
+.deprel-tag-clicked {
+  fill: var(--acorn-gray-L1)!important;
+}
 </style>

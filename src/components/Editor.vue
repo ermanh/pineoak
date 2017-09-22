@@ -98,6 +98,7 @@ export default {
     drawGutterGrip()
 
     this.enableHover()
+    this.enableClicked()
 
     console.log('Everything mounted!')
   },
@@ -124,6 +125,7 @@ export default {
       editor.selection.moveTo(0, 0)
       drawD3(this.sentences, this.drawConfig)
       this.enableHover()
+      this.enableClicked()
     },
     enableHover () {
       // Word Group and Alignments hover-highlighting
@@ -267,6 +269,144 @@ export default {
           _toNode.select('rect').classed('deprel-wordbox-hover', false)
           _toNode.select('text.word').classed('deprel-word-hover', false)
           _toNode.select('text.tag').classed('deprel-tag-hover', false)
+        })
+    },
+    enableClicked () {
+      // Word Group and Alignments click-highlighting
+      d3.selectAll('g.wordGroup')
+        .on('click', function () {
+          const clicked = d3.select(this).attr('clicked')
+          if (clicked === '0') {
+            d3.select(this).attr('clicked', '1')
+            d3.select(this).select('rect').classed('word-box-clicked', true)
+            d3.select(this).select('text.word').classed('word-text-clicked', true)
+            d3.select(this).select('text.tag').classed('word-tag-clicked', true)
+          } else if (clicked === '1') {
+            d3.select(this).attr('clicked', '2')
+            d3.select(this).select('rect').classed('word-box-clicked', true)
+            const _from = d3.select(this).attr('word-id')
+            const alignmentsFrom = d3.selectAll('.alignmentPath[_from="' + _from + '"]')
+            const alignmentsTo = d3.selectAll('.alignmentPath[_to="' + _from + '"]')
+            alignmentsFrom.classed('alignment-clicked', true)
+            alignmentsTo.classed('alignment-clicked', true)
+            alignmentsFrom.each(function (d, i) {
+              d3.select('g[word-id="' + d._to + '"]').attr('clicked', '2')
+              d3.select('g[word-id="' + d._to + '"]').select('rect').classed('word-box-clicked', true)
+              d3.select('g[word-id="' + d._to + '"]').select('text.word').classed('word-text-clicked', true)
+              d3.select('g[word-id="' + d._to + '"]').select('text.tag').classed('word-tag-clicked', true)
+              d3.select('g[word-id="' + d._from + '"]').attr('clicked', '2')
+              d3.select('g[word-id="' + d._from + '"]').select('rect').classed('word-box-clicked', true)
+              d3.select('g[word-id="' + d._from + '"]').select('text.word').classed('word-text-clicked', true)
+              d3.select('g[word-id="' + d._from + '"]').select('text.tag').classed('word-tag-clicked', true)
+              // reverse paths
+              d3.selectAll('.alignmentPath[_to="' + d._to + '"]')
+                .classed('alignment-clicked', true)
+              // reverse aligned words
+              d3.selectAll('.alignmentPath[_to="' + d._to + '"]').each(function (d, i) {
+                d3.select('g[word-id="' + d._from + '"]').attr('clicked', '2')
+                d3.select('g[word-id="' + d._from + '"]').select('rect').classed('word-box-clicked', true)
+                d3.select('g[word-id="' + d._from + '"]').select('text.word').classed('word-text-clicked', true)
+                d3.select('g[word-id="' + d._from + '"]').select('text.tag').classed('word-tag-clicked', true)
+              })
+            })
+            alignmentsTo.each(function (d, i) {
+              d3.select('g[word-id="' + d._to + '"]').attr('clicked', '2')
+              d3.select('g[word-id="' + d._to + '"]').select('rect').classed('word-box-clicked', true)
+              d3.select('g[word-id="' + d._to + '"]').select('text.word').classed('word-text-clicked', true)
+              d3.select('g[word-id="' + d._to + '"]').select('text.tag').classed('word-tag-clicked', true)
+              d3.select('g[word-id="' + d._from + '"]').attr('clicked', '2')
+              d3.select('g[word-id="' + d._from + '"]').select('rect').classed('word-box-clicked', true)
+              d3.select('g[word-id="' + d._from + '"]').select('text.word').classed('word-text-clicked', true)
+              d3.select('g[word-id="' + d._from + '"]').select('text.tag').classed('word-tag-clicked', true)
+              // reverse paths
+              d3.selectAll('.alignmentPath[_from="' + d._from + '"]')
+                .classed('alignment-clicked', true)
+              // reverse aligned words
+              d3.selectAll('.alignmentPath[_from="' + d._from + '"]').each(function (d, i) {
+                d3.select('g[word-id="' + d._to + '"]').attr('clicked', '2')
+                d3.select('g[word-id="' + d._to + '"]').select('rect').classed('word-box-clicked', true)
+                d3.select('g[word-id="' + d._to + '"]').select('text.word').classed('word-text-clicked', true)
+                d3.select('g[word-id="' + d._to + '"]').select('text.tag').classed('word-tag-clicked', true)
+              })
+            })
+          } else if (clicked === '2') {
+            d3.select(this).attr('clicked', '0')
+            d3.select(this).select('rect').classed('word-box-clicked', false)
+            const _from = d3.select(this).attr('word-id')
+            const alignmentsFrom = d3.selectAll('.alignmentPath[_from="' + _from + '"]')
+            const alignmentsTo = d3.selectAll('.alignmentPath[_to="' + _from + '"]')
+            alignmentsFrom.classed('alignment-clicked', false)
+            alignmentsTo.classed('alignment-clicked', false)
+            alignmentsFrom.each(function (d, i) {
+              d3.select('g[word-id="' + d._to + '"]').attr('clicked', '0')
+              d3.select('g[word-id="' + d._to + '"]').select('rect').classed('word-box-clicked', false)
+              d3.select('g[word-id="' + d._to + '"]').select('text.word').classed('word-text-clicked', false)
+              d3.select('g[word-id="' + d._to + '"]').select('text.tag').classed('word-tag-clicked', false)
+              d3.select('g[word-id="' + d._from + '"]').attr('clicked', '0')
+              d3.select('g[word-id="' + d._from + '"]').select('rect').classed('word-box-clicked', false)
+              d3.select('g[word-id="' + d._from + '"]').select('text.word').classed('word-text-clicked', false)
+              d3.select('g[word-id="' + d._from + '"]').select('text.tag').classed('word-tag-clicked', false)
+              // reverse paths
+              d3.selectAll('.alignmentPath[_to="' + d._to + '"]')
+                .classed('alignment-clicked', false)
+              // reverse aligned words
+              d3.selectAll('.alignmentPath[_to="' + d._to + '"]').each(function (d, i) {
+                d3.select('g[word-id="' + d._from + '"]').attr('clicked', '0')
+                d3.select('g[word-id="' + d._from + '"]').select('rect').classed('word-box-clicked', false)
+                d3.select('g[word-id="' + d._from + '"]').select('text.word').classed('word-text-clicked', false)
+                d3.select('g[word-id="' + d._from + '"]').select('text.tag').classed('word-tag-clicked', false)
+              })
+            })
+            alignmentsTo.each(function (d, i) {
+              d3.select('g[word-id="' + d._to + '"]').attr('clicked', '0')
+              d3.select('g[word-id="' + d._to + '"]').select('rect').classed('word-box-clicked', false)
+              d3.select('g[word-id="' + d._to + '"]').select('text.word').classed('word-text-clicked', false)
+              d3.select('g[word-id="' + d._to + '"]').select('text.tag').classed('word-tag-clicked', false)
+              d3.select('g[word-id="' + d._from + '"]').attr('clicked', '0')
+              d3.select('g[word-id="' + d._from + '"]').select('rect').classed('word-box-clicked', false)
+              d3.select('g[word-id="' + d._from + '"]').select('text.word').classed('word-text-clicked', false)
+              d3.select('g[word-id="' + d._from + '"]').select('text.tag').classed('word-tag-clicked', false)
+              // reverse paths
+              d3.selectAll('.alignmentPath[_from="' + d._from + '"]')
+                .classed('alignment-clicked', false)
+              // reverse aligned words
+              d3.selectAll('.alignmentPath[_from="' + d._from + '"]').each(function (d, i) {
+                d3.select('g[word-id="' + d._to + '"]').attr('clicked', '0')
+                d3.select('g[word-id="' + d._to + '"]').select('rect').classed('word-box-clicked', false)
+                d3.select('g[word-id="' + d._to + '"]').select('text.word').classed('word-text-clicked', false)
+                d3.select('g[word-id="' + d._to + '"]').select('text.tag').classed('word-tag-clicked', false)
+              })
+            })
+          }
+        })
+
+      // Deprel click-highlighting
+      d3.selectAll('.deprelBox')
+        .on('click', function () {
+          const clicked = d3.select(this).attr('clicked')
+          if (clicked === '0') {
+            d3.select(this).attr('clicked', '1')
+            d3.select(this).classed('deprel-box-clicked', true)
+            d3.select(this.parentNode).select('text').classed('deprel-text-clicked', true)
+            d3.select(this.parentNode).select('.pathLine').classed('deprel-line-clicked', true)
+            d3.select(this.parentNode).select('.pathArrow').classed('deprel-arrow-clicked', true)
+            // const _from = d3.select(this.parentNode).attr('_from')
+            // const _to = d3.select(this.parentNode).attr('_to')
+            // const _fromNode = d3.select('g[word-id="' + _from + '"]')
+            // const _toNode = d3.select('g[word-id="' + _to + '"]')
+            // _fromNode.select('rect').classed('deprel-wordbox-hover', true)
+            // _fromNode.select('text.word').classed('deprel-word-hover', true)
+            // _fromNode.select('text.tag').classed('deprel-tag-hover', true)
+            // _toNode.select('rect').classed('deprel-wordbox-hover', true)
+            // _toNode.select('text.word').classed('deprel-word-hover', true)
+            // _toNode.select('text.tag').classed('deprel-tag-hover', true)
+          } else {
+            d3.select(this).attr('clicked', '0')
+            d3.select(this).classed('deprel-box-clicked', false)
+            d3.select(this.parentNode).select('text').classed('deprel-text-clicked', false)
+            d3.select(this.parentNode).select('.pathLine').classed('deprel-line-clicked', false)
+            d3.select(this.parentNode).select('.pathArrow').classed('deprel-arrow-clicked', false)
+          }
         })
     }
   }

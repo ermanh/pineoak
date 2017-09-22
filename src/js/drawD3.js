@@ -54,6 +54,7 @@ export function drawD3 (sentences, drawConfig) {
     .enter()
     .append('g')
     .attr('class', 'baseWordGroup wordGroup')
+    .attr('clicked', '0')
     .attr('id', function (w) { return 'wordGroup-' + w._key })
     .attr('order', function (w) { return w.order })
     .attr('wordGroupWidth', function (w) { return w.wordGroupWidth })
@@ -214,6 +215,7 @@ export function drawD3 (sentences, drawConfig) {
 
   const deprelBoxes = deprels.append('rect')
     .attr('class', function (d) { return 'deprelBox ' + d.deprel })
+    .attr('clicked', '0')
     .attr('x', function (d) { return getLabelX(d, getTextWidth, deprelFontSpec).boxX })
     .attr('y', function (d) { return getLabelY(d, deprelTextHeight).boxY })
     .attr('rx', deprelBoxRadius)
@@ -226,6 +228,7 @@ export function drawD3 (sentences, drawConfig) {
 
   const deprelTexts = deprels.append('text')
     .attr('class', function (d) { return 'deprelText ' + d.deprel })
+    .attr('clicked', '0')
     .attr('x', function (d) { return getLabelX(d, getTextWidth, deprelFontSpec).textX })
     .attr('y', function (d) { return getLabelY(d, deprelTextHeight).textY })
     .attr('fill', textColor)
