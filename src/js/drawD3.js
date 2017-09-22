@@ -144,6 +144,7 @@ export function drawD3 (sentences, drawConfig) {
     .enter()
     .append('g')
     .attr('class', 'parallelWordGroup wordGroup')
+    .attr('clicked', '0')
     .attr('id', function (w) { return 'wordGroup-' + w._key })
     .attr('order', function (w) { return w.order })
     .attr('wordGroupWidth', function (w) { return w.wordGroupWidth })

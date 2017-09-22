@@ -20,6 +20,7 @@
     <div id="editor-container">
       <div id="editorToolbar">
         <a @click="saveEditorValue">SAVE</a>
+        <a @click="convertEditorValue">CONVERT</a>
       </div>
       <div id="editor"></div>
     </div>
@@ -32,6 +33,7 @@ const d3 = require('d3')
 const { drawD3 } = require('../js/drawD3')
 const { conll } = require('../js/conll')
 const { conllToJson } = require('../js/conllToJson')
+const { textToConll } = require('../js/textToConll')
 const ace = require('brace')
 require('brace/mode/perl')
 require('brace/theme/iplastic')
@@ -121,6 +123,17 @@ export default {
       const editor = ace.edit('editor')
       const newConll = editor.getValue()
       this.conll = newConll
+      editor.$blockScrolling = Infinity
+      editor.selection.moveTo(0, 0)
+      drawD3(this.sentences, this.drawConfig)
+      this.enableHover()
+      this.enableClicked()
+    },
+    convertEditorValue () {
+      const editor = ace.edit('editor')
+      const newConll = editor.getValue()
+      this.conll = textToConll(newConll)
+      editor.setValue(this.conll)
       editor.$blockScrolling = Infinity
       editor.selection.moveTo(0, 0)
       drawD3(this.sentences, this.drawConfig)
@@ -482,6 +495,20 @@ export default {
 #editorToolbar > a {
   color: var(--acorn-brown-D2);
   margin: 0;
+  padding: 1px 8px;
+  font-size: 10pt;
+  background-color: orange;
+  border: 1px orange solid;
+  border-radius: 0;
+  opacity: 0.85;
+}
+#convert {
+  margin-top: 5px;
+  right: 0;
+}
+#convert > a{
+  color: var(--acorn-brown-D2);
+  margin-top: 23px;
   padding: 1px 8px;
   font-size: 10pt;
   background-color: orange;
