@@ -332,6 +332,8 @@ export default {
           } else if (clicked === '2') {
             d3.select(this).attr('clicked', '0')
             d3.select(this).select('rect').classed('word-box-clicked', false)
+            d3.select(this).select('text.word').classed('word-text-clicked', false)
+            d3.select(this).select('text.tag').classed('word-tag-clicked', false)
             const _from = d3.select(this).attr('word-id')
             const alignmentsFrom = d3.selectAll('.alignmentPath[_from="' + _from + '"]')
             const alignmentsTo = d3.selectAll('.alignmentPath[_to="' + _from + '"]')
