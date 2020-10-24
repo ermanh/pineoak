@@ -1,7 +1,8 @@
 # pineoak
 
 > A vue.js application for parallel treebank annotation
-> The visualization component is viewable at https://ermanh.github.io/pineoak/
+
+The visualization component is viewable at https://ermanh.github.io/pineoak/
 
 ## Build Setup
 
